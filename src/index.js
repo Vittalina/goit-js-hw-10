@@ -1,6 +1,7 @@
 import './css/styles.css';
 import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
+import { fetchCountries } from './fetchCountries';
 
 const DEBOUNCE_DELAY = 300;
 
@@ -10,7 +11,8 @@ const countryInfo = document.querySelector(".country-info");
 
 input.addEventListener("input", debounce(onInputTape), DEBOUNCE_DELAY);
 
-function onInputTape() {
+function onInputTape(event) {
+    event.preventDefault();
     
     countryList.innerHTML = '';
 
@@ -35,40 +37,27 @@ function onInputTape() {
 }
 
 
-function fetchCountries(name) {
-    return fetch(`https://restcountries.com/v3.1/name/${name}?fields=name,capital,population,flags,languages`)
-        .then(response => { 
-            if (!response.ok) {
-        throw new Error(response.statusText);
-            }
-            return response.json();
-            });
-};
-
 function buildCountryList(countries) {
     return countries.map(country => `<li>
-        <img src=${country.flags.svg} height=12/>
+        <img src=${country.flags.svg} alt = "${country.name.common}"height=12/>
         <span>${country.name.official}</span>
         </li>`).join('');
 }
 
 function buildCountryMarkup(countries) {
-
-    
-    return countries.map(({ name, capital, population, flags, languages }) => {
-        const lang = JSON.stringify(languages);
-        `<ul>
+    return countries.map(country =>
+            `<ul>
         <li class="country-list-header">
-        <img class="country-list-img" src=${flags.svg} height=18/>
-        <span class="country-title">${name.official}</span>
+        <img class="country-list-img" src=${country.flags.svg} height=18/>
+        <span class="country-title">${country.name.official}</span>
         </li>
         <li class="country-list-item">
-        <span class="country-name-inform">Capital: </span><span class="country-definition">${capital}</span>
+        <span class="country-name-inform">Capital: </span><span class="country-definition">${country.capital}</span>
         </li>
         <li class="country-list-item">
-        <span class="country-name-inform">Population: </span><span class="country-definition">${population}</li>
+        <span class="country-name-inform">Population: </span><span class="country-definition">${country.population}</li>
         <li class="country-list-item">
-        <span class="country-name-inform">Languages: </span><span class="country-definition">${lang}</span>
+        <span class="country-name-inform">Languages: </span><span class="country-definition"> ${Object.values(country.languages).join(', ')}</span>
         </li>
-            </ul>`}).join("");
+            </ul>`).join("");
 }        
