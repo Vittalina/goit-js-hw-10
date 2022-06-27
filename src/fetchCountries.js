@@ -5,5 +5,5 @@ export const fetchCountries = name =>  {
         throw new Error(response.statusText);
             }
             return response.json();
-            }).catch(error => console.log(error))
+            })
 };
