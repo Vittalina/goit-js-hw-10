@@ -19,7 +19,6 @@ function onInputTape(event) {
     console.log(valueInput);
 
     if (valueInput === '') {
-        // event.target.value = '';
         resetSearchResult();
         return Notiflix.Notify.warning('Search query is empty!');
     }
