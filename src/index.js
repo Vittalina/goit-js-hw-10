@@ -9,7 +9,7 @@ const input = document.querySelector("input#search-box");
 const countryList = document.querySelector(".country-list");
 const countryInfo = document.querySelector(".country-info");
 
-input.addEventListener("input", debounce(onInputTape), DEBOUNCE_DELAY);
+input.addEventListener("input", debounce((onInputTape), DEBOUNCE_DELAY));
 
 function onInputTape(event) {
     
@@ -19,7 +19,7 @@ function onInputTape(event) {
     console.log(valueInput);
 
     if (valueInput === '') {
-        event.target.value = '';
+        // event.target.value = '';
         resetSearchResult();
         return Notiflix.Notify.warning('Search query is empty!');
     }
